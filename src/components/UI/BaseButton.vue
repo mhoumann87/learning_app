@@ -22,7 +22,6 @@
   }
 
   button:hover,
-  button:focus,
   button:active {
     background-color: #270041;
     border-color: #270041;
@@ -36,7 +35,6 @@
   }
 
   .flat:hover,
-  .flat:focus,
   .flat:active {
     background-color: #edd2ff;
   }
