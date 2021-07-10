@@ -1,10 +1,22 @@
 <template>
+  <base-dialog v-if="inputIsInvalid" title="Invalid Input" @close="closeDialog">
+    <template #default>
+      <p>Unfortunally, one or more of the inputs are invalid.</p>
+      <p>Please check your inputs and make sure that your input are valid.</p>
+    </template>
+
+    <template #actions>
+      <base-button @click="closeDialog">Ok</base-button>
+    </template>
+  </base-dialog>
+
   <base-card>
     <form @submit.prevent="submitData">
       <div class="form-control">
         <label for="title">Title</label>
         <input type="text" id="title" name="title" ref="titleInput" />
       </div>
+
       <div class="form-control">
         <label for="description">Discription</label>
         <textarea
@@ -14,10 +26,12 @@
           ref="descInput"
         ></textarea>
       </div>
+
       <div class="form-control">
         <label for="link">Link</label>
         <input type="url" name="link" id="link" ref="linkInput" />
       </div>
+
       <div>
         <base-button type="submit">Add Resource</base-button>
       </div>
@@ -28,13 +42,31 @@
 <script>
   export default {
     inject: ['addRecousce'],
+    data() {
+      return {
+        inputIsInvalid: false,
+      };
+    },
     methods: {
       submitData() {
         const enteredTitle = this.$refs.titleInput.value;
         const enteredDescription = this.$refs.descInput.value;
         const enteredLink = this.$refs.linkInput.value;
+
+        if (
+          enteredTitle.trim() === '' ||
+          enteredDescription.trim() === '' ||
+          enteredLink.trim === ''
+        ) {
+          this.inputIsInvalid = true;
+          return;
+        }
+
         // console.log(enteredLink, enteredTitle, enteredDescription);
         this.addRecousce(enteredTitle, enteredDescription, enteredLink);
+      },
+      closeDialog() {
+        this.inputIsInvalid = false;
       },
     },
   };
